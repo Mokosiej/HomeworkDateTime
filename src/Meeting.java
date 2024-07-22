@@ -1,9 +1,6 @@
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 
-class Meeting {
+public class Meeting {
     private String person1;
     private String person2;
     private LocalDateTime meetingDateTime;
