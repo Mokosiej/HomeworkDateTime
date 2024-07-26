@@ -1,4 +1,7 @@
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Meeting {
     private String person1;
@@ -26,13 +29,14 @@ public class Meeting {
         meetings.add(new Meeting("Charlie", "Dave", LocalDateTime.of(2023, 7, 10, 16, 0)));
         meetings.add(new Meeting("Eve", "Frank", LocalDateTime.of(2023, 7, 10, 15, 0)));
 
-        LocalTime averageMeetingTime = meetings.stream()
+        long totalSeconds = meetings.stream()
                 .map(Meeting::getMeetingDateTime)
-                .map(LocalDateTime::toLocalTime)
-                .reduce(LocalTime.MIDNIGHT, (total, time) -> total.plusSeconds(time.toSecondOfDay()),
-                        (total1, total2) -> total1.plusSeconds(total2.toSecondOfDay() / meetings.size()));
+                .mapToLong(dt -> dt.toLocalTime().toSecondOfDay())
+                .sum();
+
+        long averageSeconds = totalSeconds / meetings.size();
+        LocalTime averageMeetingTime = LocalTime.ofSecondOfDay(averageSeconds);
 
         System.out.println("Среднее время начала встреч: " + averageMeetingTime);
     }
 }
-

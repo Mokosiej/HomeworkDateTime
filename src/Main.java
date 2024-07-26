@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        // Задание 1: Найти самый старый язык программирования
+
         List<ProgrammingLanguage> languages = new ArrayList<>();
         languages.add(new ProgrammingLanguage("Java", "James Gosling", LocalDate.of(1995, 5, 23)));
         languages.add(new ProgrammingLanguage("Python", "Guido van Rossum", LocalDate.of(1991, 2, 20)));
@@ -20,7 +20,7 @@ public class Main {
 
         System.out.println("Самый старый язык программирования: " + oldestLanguage);
 
-        // Задание 2: Найти самую новую посылку в Берлин
+
         List<Package> packages = new ArrayList<>();
         packages.add(new Package("Moscow", "Berlin", 2.5, LocalDateTime.of(2023, 7, 10, 14, 30)));
         packages.add(new Package("Paris", "Berlin", 1.2, LocalDateTime.of(2023, 7, 12, 9, 45)));
@@ -34,18 +34,21 @@ public class Main {
 
         System.out.println("Самая новая посылка в Берлин: " + newestPackageToBerlin);
 
-        // Задание 3: Найти среднее время начала всех встреч
+
         List<Meeting> meetings = new ArrayList<>();
         meetings.add(new Meeting("Alice", "Bob", LocalDateTime.of(2023, 7, 10, 14, 0)));
         meetings.add(new Meeting("Charlie", "Dave", LocalDateTime.of(2023, 7, 10, 16, 0)));
         meetings.add(new Meeting("Eve", "Frank", LocalDateTime.of(2023, 7, 10, 15, 0)));
 
-        LocalTime averageMeetingTime = meetings.stream()
+        long totalSeconds = meetings.stream()
                 .map(Meeting::getMeetingDateTime)
-                .map(LocalDateTime::toLocalTime)
-                .reduce(LocalTime.MIDNIGHT, (total, time) -> total.plusSeconds(time.toSecondOfDay()),
-                        (total1, total2) -> total1.plusSeconds(total2.toSecondOfDay() / meetings.size()));
+                .mapToLong(dt -> dt.toLocalTime().toSecondOfDay())
+                .sum();
+
+        long averageSeconds = totalSeconds / meetings.size();
+        LocalTime averageMeetingTime = LocalTime.ofSecondOfDay(averageSeconds);
 
         System.out.println("Среднее время начала встреч: " + averageMeetingTime);
     }
 }
+
